@@ -1,0 +1,36 @@
+name: Deploying an app
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["dev", "main"]
+  pull_request:
+      branches: ["main"]
+
+jobs:
+  dev:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+      TF_VAR_terraform_key: ${{ secrets.terraform_key }}
+      AWS_DEFAULT_REGION: us-east-1
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Terraform Init
+        run: |
+          cd terraform
+          terraform init -backend-config="key=${TF_VAR_terraform_key}"
+
+      - name: Terraform plan
+        run: |
+          cd terraform
+          terraform plan -var-file=dev.tfvars
+
+      - name: Terraform apply
+        run: |
+          cd terraform
+          terraform apply -var-file=dev.tfvars -auto-approve
