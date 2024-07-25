@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { API_URL_BUDHA } from "../config";
 import {
   addProduct,
   updateProduct,
@@ -7,7 +8,7 @@ import {
   uploadProductThumbnail,
 } from "../features/apiCalls";
 
-const BASE_API_URL = "http://localhost:8081";
+const BASE_API_URL = "{ API_URL_BUDHA }";
 const AddProduct = () => {
   const { id } = useParams();
   const [defaultValue, setDeafaultValue] = useState({

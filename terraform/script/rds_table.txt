@@ -16,8 +16,8 @@ CREATE TABLE product (
 
 INSERT INTO product (productTitle, productDescription, productPrice, availableQuantity, productThumbnail)
 VALUES
-('hello', 'A high precision wireless mouse suitable for gaming and office use.', 25.99, 150, 'mouse_thumbnail.jpg'),
-('hi', 'Comfortable and stylish ergonomic keyboard for long typing sessions.', 45.50, 85, 'keyboard_thumbnail.jpg'),
-('why', 'Full HD webcam for streaming and video calls with 1080p resolution.', 70.00, 120, 'webcam_thumbnail.jpg'),
-('why not', 'High capacity 10000mAh portable charger for smartphones and tablets.', 34.99, 200, 'charger_thumbnail.jpg'),
-('ok', 'Noise-cancelling headphones with up to 20 hours of battery life.', 89.99, 90, 'headphones_thumbnail.jpg');
+('car', 'A high precision wireless mouse suitable for gaming and office use.', 25.99, 150, 'mouse_thumbnail.jpg'),
+('bike', 'Comfortable and stylish ergonomic keyboard for long typing sessions.', 45.50, 85, 'keyboard_thumbnail.jpg'),
+('bus', 'Full HD webcam for streaming and video calls with 1080p resolution.', 70.00, 120, 'webcam_thumbnail.jpg'),
+('cycle', 'High capacity 10000mAh portable charger for smartphones and tablets.', 34.99, 200, 'charger_thumbnail.jpg'),
+('taxi', 'Noise-cancelling headphones with up to 20 hours of battery life.', 89.99, 90, 'headphones_thumbnail.jpg');

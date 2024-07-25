@@ -1,17 +1,17 @@
-module "ec2_instance" {
-  source = "terraform-aws-modules/ec2-instance/aws"
-  version = "5.6.1"
+# module "ec2_instance" {
+#   source = "terraform-aws-modules/ec2-instance/aws"
+#   version = "5.6.1"
 
-  name = "Jump_Server_ujwal"
+#   name = "Jump_Server_ujwal"
 
-  instance_type               = "t2.micro"
-  ami                         = var.ami
-  key_name                    = "intern-ujwal"
-  monitoring                  = true
-  vpc_security_group_ids      = [module.backend_sg.security_group_id]
-  subnet_id                   = element(module.vpc.public_subnets, 0)
-  associate_public_ip_address = true
-}
+#   instance_type               = "t2.micro"
+#   ami                         = var.ami
+#   key_name                    = "intern-ujwal"
+#   monitoring                  = true
+#   vpc_security_group_ids      = [module.backend_sg.security_group_id]
+#   subnet_id                   = element(module.vpc.public_subnets, 0)
+#   associate_public_ip_address = true
+# }
 
 
 # module "ec2_instance_frontend01" {

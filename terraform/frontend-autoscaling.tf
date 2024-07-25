@@ -9,13 +9,9 @@ module "frontend-autoscaling_group" {
   image_id             = var.ami
   instance_type        = "t2.medium"
   key_name             = "intern-ujwal"
-  network_interfaces = [
-      {
-        associate_public_ip_address = true
-      }
-    ]
+  iam_instance_profile_arn = aws_iam_instance_profile.ssm_instance_profile.arn
   
-
+  
   user_data = base64encode(file("${path.module}/script/frontend.sh"))
 
   security_groups = [ module.frontend_sg.security_group_id ]
@@ -29,4 +25,5 @@ module "frontend-autoscaling_group" {
     module.vpc.private_subnets[1]
   ]
     target_group_arns = [aws_lb_target_group.frontend_tg.arn]
+    
 }

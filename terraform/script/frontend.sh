@@ -4,6 +4,9 @@
 sudo apt-get update -y
 sudo apt-get upgrade -y
 
+# Restart ssm agent
+sudo systemctl restart snap.amazon-ssm-agent.amazon-ssm-agent.service
+
 # Install Node 20
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 source ~/.bashrc
@@ -12,11 +15,13 @@ nvm install 20
 nvm use 20
 nvm alias default 20
 
+sudo apt install npm -y
+
 # Install MySQL server
 sudo apt-get install -y mysql-server
 
 # Install PM2 globally
-npm install -g pm2
+sudo npm install -g pm2
 
 # Install Nginx
 sudo apt-get install -y nginx
