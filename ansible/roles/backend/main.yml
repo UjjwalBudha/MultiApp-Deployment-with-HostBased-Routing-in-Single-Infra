@@ -1,0 +1,67 @@
+---
+- name: Update package list and install dependencies
+  apt:
+    update_cache: yes
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - build-essential
+    - libssl-dev
+    - curl
+    - mysql-server
+    - npm
+    - nginx
+
+- name: Restart SSM agent
+  service:
+    name: snap.amazon-ssm-agent.amazon-ssm-agent.service
+    state: restarted
+
+- name: Install NVM
+  shell: |
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+    source ~/.bashrc
+  args:
+    executable: /bin/bash
+
+- name: Install Node.js 20 using NVM
+  shell: |
+    source ~/.nvm/nvm.sh
+    nvm install 20
+    nvm use 20
+    nvm alias default 20
+  args:
+    executable: /bin/bash
+
+- name: Clone GitHub repository
+  git:
+    repo: 'https://github.com/UjjwalBudha/final-project-app-backend.git'
+    dest: /home/ubuntu/final-project-app-backend
+
+- name: Install npm packages for the backend
+  npm:
+    path: /home/ubuntu/final-project-app-backend
+    state: present
+
+- name: Deploy Nginx configuration
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/default
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Test Nginx configuration
+  command: nginx -t
+  register: nginx_test
+  ignore_errors: yes
+
+- name: Fail if Nginx configuration test fails
+  fail:
+    msg: "Nginx configuration test failed"
+  when: nginx_test.rc != 0
+
+- name: Restart Nginx to apply the changes
+  service:
+    name: nginx
+    state: restarted

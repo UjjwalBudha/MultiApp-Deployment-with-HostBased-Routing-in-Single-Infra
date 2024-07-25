@@ -5,7 +5,7 @@ on:
   push:
     branches: ["dev", "main"]
   pull_request:
-      branches: ["main"]
+    branches: ["main"]
 
 jobs:
   dev:
@@ -16,21 +16,37 @@ jobs:
       AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
       TF_VAR_terraform_key: ${{ secrets.terraform_key }}
       AWS_DEFAULT_REGION: us-east-1
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.1.6
 
       - name: Terraform Init
         run: |
           cd terraform
           terraform init -backend-config="key=${TF_VAR_terraform_key}"
 
-      - name: Terraform plan
+      - name: Terraform Plan
         run: |
           cd terraform
           terraform plan -var-file=dev.tfvars
 
-      - name: Terraform apply
+      - name: Terraform Apply
         run: |
           cd terraform
           terraform apply -var-file=dev.tfvars -auto-approve
+
+      - name: Install Ansible
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ansible
+
+      - name: Run Ansible Playbook
+        run: |
+          cd ansible
+          ansible-playbook -i ansible/aws_ec2.yml ansible/playbook.yml

@@ -1,0 +1,75 @@
+---
+- name: Update the system
+  apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: Restart SSM agent
+  service:
+    name: snap.amazon-ssm-agent.amazon-ssm-agent.service
+    state: restarted
+
+- name: Install NVM and Node.js 20
+  shell: |
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    nvm install 20
+    nvm use 20
+    nvm alias default 20
+  args:
+    executable: /bin/bash
+
+- name: Ensure npm is installed
+  apt:
+    name: npm
+    state: present
+
+- name: Install MySQL server
+  apt:
+    name: mysql-server
+    state: present
+
+- name: Install PM2 globally
+  npm:
+    name: pm2
+    global: yes
+    state: present
+
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: Clone GitHub repository
+  git:
+    repo: 'https://github.com/UjjwalBudha/final-project-app-frontend.git'
+    dest: /home/ubuntu/final-project-app-frontend
+
+- name: Install npm packages for the frontend
+  npm:
+    path: /home/ubuntu/final-project-app-frontend
+    state: present
+
+- name: Deploy Nginx configuration
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/default
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Test Nginx configuration
+  command: nginx -t
+  register: nginx_test
+  ignore_errors: yes
+
+- name: Fail if Nginx configuration test fails
+  fail:
+    msg: "Nginx configuration test failed"
+  when: nginx_test.rc != 0
+
+- name: Restart Nginx to apply the changes
+  service:
+    name: nginx
+    state: restarted
