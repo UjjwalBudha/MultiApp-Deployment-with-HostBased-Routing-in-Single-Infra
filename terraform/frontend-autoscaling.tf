@@ -25,8 +25,8 @@ module "frontend-autoscaling_group" {
   min_size            = 1
   max_size            = 3
   vpc_zone_identifier = [
-    module.vpc.public_subnets[0],
-    module.vpc.public_subnets[1]
+    module.vpc.private_subnets[0],
+    module.vpc.private_subnets[1]
   ]
     target_group_arns = [aws_lb_target_group.frontend_tg.arn]
 }
