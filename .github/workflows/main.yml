@@ -43,4 +43,4 @@ jobs:
       - name: Run Ansible Playbook
         run: |
           cd ansible
-          ansible-playbook -i ansible/aws_ec2.yml ansible/playbook.yml
+          ansible-playbook -i aws_ec2.yml playbook.yml
