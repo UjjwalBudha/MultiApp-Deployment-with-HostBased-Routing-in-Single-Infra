@@ -5,7 +5,7 @@ on:
   push:
     branches: ["dev", "main"]
   pull_request:
-    branches: ["main"]
+      branches: ["main"]
 
 jobs:
   dev:
@@ -16,27 +16,21 @@ jobs:
       AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
       TF_VAR_terraform_key: ${{ secrets.terraform_key }}
       AWS_DEFAULT_REGION: us-east-1
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 1.1.6
 
       - name: Terraform Init
         run: |
           cd terraform
           terraform init -backend-config="key=${TF_VAR_terraform_key}"
 
-      - name: Terraform Plan
+      - name: Terraform plan
         run: |
           cd terraform
           terraform plan -var-file=dev.tfvars
 
-      - name: Terraform Apply
+      - name: Terraform apply
         run: |
           cd terraform
           terraform apply -var-file=dev.tfvars -auto-approve
