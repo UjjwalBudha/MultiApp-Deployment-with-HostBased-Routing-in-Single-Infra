@@ -16,6 +16,7 @@ jobs:
       AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
       TF_VAR_terraform_key: ${{ secrets.terraform_key }}
       AWS_DEFAULT_REGION: us-east-1
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -25,25 +26,29 @@ jobs:
           cd terraform
           terraform init -backend-config="key=${TF_VAR_terraform_key}"
 
-      - name: Terraform plan
+      - name: Terraform Plan
         run: |
           cd terraform
           terraform plan -var-file=dev.tfvars
 
-      - name: Terraform apply
+      - name: Terraform Apply
         run: |
           cd terraform
           terraform apply -var-file=dev.tfvars -auto-approve
 
-      - name: Install Ansible
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install Ansible and AWS collections
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ansible
+          python -m pip install --upgrade pip
+          pip install ansible boto3 botocore
+          ansible-galaxy collection install amazon.aws
 
       - name: Run Ansible Playbook
         run: |
           cd ansible
-          ls
-          pwd
           ansible-inventory -i aws_ec2.yml --graph
           ansible-playbook -i aws_ec2.yml playbook.yml
