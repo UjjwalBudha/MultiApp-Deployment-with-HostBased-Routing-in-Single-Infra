@@ -16,7 +16,7 @@ module "frontend-autoscaling_group" {
     ]
   
 
-  user_data = base64encode(file("/home/ujwal/adex/final-project-internship/terraform/script/frontend.sh"))
+  user_data = base64encode(file("${path.module}/script/frontend.sh"))
 
   security_groups = [ module.frontend_sg.security_group_id ]
 
