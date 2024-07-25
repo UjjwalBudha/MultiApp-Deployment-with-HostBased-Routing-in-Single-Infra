@@ -43,5 +43,7 @@ jobs:
       - name: Run Ansible Playbook
         run: |
           cd ansible
+          ls
+          pwd
           ansible-inventory -i aws_ec2.yml --graph
           ansible-playbook -i aws_ec2.yml playbook.yml
