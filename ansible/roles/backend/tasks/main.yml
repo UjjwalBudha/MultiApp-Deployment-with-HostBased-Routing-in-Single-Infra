@@ -24,15 +24,6 @@
   args:
     executable: /bin/bash
 
-- name: Install Node.js 20 using NVM
-  shell: |
-    source ~/.nvm/nvm.sh
-    nvm install 20
-    nvm use 20
-    nvm alias default 20
-  args:
-    executable: /bin/bash
-
 - name: Clone GitHub repository
   git:
     repo: 'https://github.com/UjjwalBudha/final-project-app-backend.git'
