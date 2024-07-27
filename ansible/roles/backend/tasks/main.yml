@@ -1,38 +1,79 @@
 ---
-- name: Update package list and install dependencies
+- name: Update the system
   apt:
     update_cache: yes
-    name: "{{ item }}"
+    upgrade: dist
+
+- name: Install required packages
+  apt:
+    name:
+      - npm
+      - nginx
+      - mysql-server
     state: present
+
+- name: Install pm2 using npm
+  npm:
+    name: pm2
+    global: yes
+
+- name: Clone the backend repository if it does not exist
+  git:
+    repo: https://github.com/UjjwalBudha/final-project-backend.git
+    dest: /home/ubuntu/final-project-backend
+    version: main
+    update: no
+
+- name: Run npm install in backend1 and backend2 folders
+  command: npm install
+  args:
+    chdir: "{{ item }}"
   with_items:
-    - build-essential
-    - libssl-dev
-    - curl
-    - mysql-server
-    - npm
-    - nginx
+    - /home/ubuntu/final-project-backend/backend1
+    - /home/ubuntu/final-project-backend/backend2
 
-- name: Restart SSM agent
-  service:
-    name: snap.amazon-ssm-agent.amazon-ssm-agent.service
-    state: restarted
+- name: Delete existing .env file in backend1 folder
+  file:
+    path: /home/ubuntu/final-project-backend/backend1/.env
+    state: absent
 
-- name: Install NVM
-  shell: |
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-    source ~/.bashrc
+- name: Create new .env file in backend1 folder
+  copy:
+    dest: /home/ubuntu/final-project-backend/backend1/.env
+    content: |
+      DB_HOST=database-dev-ujwal-final-project.cmuokqciitb8.us-east-1.rds.amazonaws.com
+      DB_USERNAME=ujwal
+      DB_PASSWORD=ujwal123
+      DB_NAME=products
+
+- name: Delete existing .env file in backend2 folder
+  file:
+    path: /home/ubuntu/final-project-backend/backend2/.env
+    state: absent
+
+- name: Create new .env file in backend2 folder
+  copy:
+    dest: /home/ubuntu/final-project-backend/backend2/.env
+    content: |
+      DB_HOST=database-dev-ujwal-final-project.cmuokqciitb8.us-east-1.rds.amazonaws.com
+      DB_USERNAME=ujwal
+      DB_PASSWORD=ujwal123
+      DB_NAME=products01
+
+- name: Delete all existing pm2 processes
+  shell: pm2 delete all
   args:
     executable: /bin/bash
+  ignore_errors: true
 
-- name: Clone GitHub repository
-  git:
-    repo: 'https://github.com/UjjwalBudha/final-project-app-backend.git'
-    dest: /home/ubuntu/final-project-app-backend
-
-- name: Install npm packages for the backend
-  npm:
-    path: /home/ubuntu/final-project-app-backend
-    state: present
+- name: Start application with pm2 in backend1 and backend2 folders
+  shell: pm2 start npm --name "{{ item }}" -- start
+  args:
+    chdir: /home/ubuntu/final-project-backend/{{ item }}
+    executable: /bin/bash
+  with_items:
+    - backend1
+    - backend2
 
 - name: Deploy Nginx configuration
   template:

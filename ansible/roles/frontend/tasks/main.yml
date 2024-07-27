@@ -1,44 +1,67 @@
----
 - name: Update the system
   apt:
     update_cache: yes
-    upgrade: dist
 
-- name: Restart SSM agent
-  service:
-    name: snap.amazon-ssm-agent.amazon-ssm-agent.service
-    state: restarted
-
-- name: Ensure npm is installed
+- name: Install required dependencies
   apt:
-    name: npm
+    name:
+      - nodejs
+      - npm
+      - mysql-server
     state: present
 
-- name: Install MySQL server
-  apt:
-    name: mysql-server
-    state: present
-
-- name: Install PM2 globally
+- name: Install pm2 using npm
   npm:
     name: pm2
     global: yes
-    state: present
 
-- name: Install Nginx
-  apt:
-    name: nginx
-    state: present
+- name: Remove existing repository if it exists
+  shell: rm -rf /home/ubuntu/final-project-frontend
+  ignore_errors: yes
 
 - name: Clone GitHub repository
   git:
-    repo: 'https://github.com/UjjwalBudha/final-project-app-frontend.git'
-    dest: /home/ubuntu/final-project-app-frontend
+    repo: https://github.com/UjjwalBudha/final-project-frontend.git
+    dest: /home/ubuntu/final-project-frontend
+    update: yes
 
-- name: Install npm packages for the frontend
-  npm:
-    path: /home/ubuntu/final-project-app-frontend
-    state: present
+- name: Install npm packages for frontend1
+  command: npm install
+  args:
+    chdir: /home/ubuntu/final-project-frontend/frontend1
+  become: yes
+
+- name: Install npm packages for frontend2
+  command: npm install
+  args:
+    chdir: /home/ubuntu/final-project-frontend/frontend2
+  become: yes
+
+- name: Add API to config.js in frontend1
+  lineinfile:
+    path: /home/ubuntu/final-project-frontend/frontend1/src/config.js
+    line: "export const API_URL = 'http://backend-alb-dev-1992743690.us-east-1.elb.amazonaws.com';"
+    create: yes
+
+- name: Add API to config.js in frontend2
+  lineinfile:
+    path: /home/ubuntu/final-project-frontend/frontend2/src/config.js
+    line: "export const API_URL = 'http://backend-alb-dev-1992743690.us-east-1.elb.amazonaws.com';"
+    create: yes
+
+- name: Delete all existing PM2 processes
+  command: pm2 delete all
+  ignore_errors: yes
+
+- name: Start frontend1 with pm2
+  command: pm2 start npm --name frontend1 -- run start
+  args:
+    chdir: /home/ubuntu/final-project-frontend/frontend1
+
+- name: Start frontend2 with pm2
+  command: pm2 start npm --name frontend2 -- run start
+  args:
+    chdir: /home/ubuntu/final-project-frontend/frontend2
 
 - name: Deploy Nginx configuration
   template:
