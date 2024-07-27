@@ -16,11 +16,11 @@ CREATE TABLE product (
 
 INSERT INTO product (productTitle, productDescription, productPrice, availableQuantity, productThumbnail)
 VALUES
-('car', 'A high precision wireless mouse suitable for gaming and office use.', 25.99, 150, 'mouse_thumbnail.jpg'),
-('bike', 'Comfortable and stylish ergonomic keyboard for long typing sessions.', 45.50, 85, 'keyboard_thumbnail.jpg'),
-('bus', 'Full HD webcam for streaming and video calls with 1080p resolution.', 70.00, 120, 'webcam_thumbnail.jpg'),
-('cycle', 'High capacity 10000mAh portable charger for smartphones and tablets.', 34.99, 200, 'charger_thumbnail.jpg'),
-('taxi', 'Noise-cancelling headphones with up to 20 hours of battery life.', 89.99, 90, 'headphones_thumbnail.jpg');
+('car', 'A high precision wireless mouse suitable for gaming and office use.', 25.99, 150, 'image1.jpg'),
+('bike', 'Comfortable and stylish ergonomic keyboard for long typing sessions.', 45.50, 85, 'image2.jpg'),
+('bus', 'Full HD webcam for streaming and video calls with 1080p resolution.', 70.00, 120, 'image3.jpg'),
+('cycle', 'High capacity 10000mAh portable charger for smartphones and tablets.', 34.99, 200, 'image4.jpg'),
+('taxi', 'Noise-cancelling headphones with up to 20 hours of battery life.', 89.99, 90, 'image5.jpg');
 
 
 
@@ -47,8 +47,8 @@ CREATE TABLE product (
 
 INSERT INTO product (productTitle, productDescription, productPrice, availableQuantity, productThumbnail)
 VALUES
-('mobile', 'A high precision wireless mouse suitable for gaming and office use.', 25.99, 150, 'mouse_thumbnail.jpg'),
-('laptop', 'Comfortable and stylish ergonomic keyboard for long typing sessions.', 45.50, 85, 'keyboard_thumbnail.jpg'),
-('tv', 'Full HD webcam for streaming and video calls with 1080p resolution.', 70.00, 120, 'webcam_thumbnail.jpg'),
-('fridge', 'High capacity 10000mAh portable charger for smartphones and tablets.', 34.99, 200, 'charger_thumbnail.jpg'),
-('box', 'Noise-cancelling headphones with up to 20 hours of battery life.', 89.99, 90, 'headphones_thumbnail.jpg');
+('mobile', 'A high precision wireless mouse suitable for gaming and office use.', 25.99, 150, 'pic1.jpg'),
+('laptop', 'Comfortable and stylish ergonomic keyboard for long typing sessions.', 45.50, 85, 'pic2.jpg'),
+('tv', 'Full HD webcam for streaming and video calls with 1080p resolution.', 70.00, 120, 'pic3.jpg'),
+('fridge', 'High capacity 10000mAh portable charger for smartphones and tablets.', 34.99, 200, 'pic4.jpg'),
+('box', 'Noise-cancelling headphones with up to 20 hours of battery life.', 89.99, 90, 'pic4.jpg');

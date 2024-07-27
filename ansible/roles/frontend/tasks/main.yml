@@ -1,6 +1,7 @@
 - name: Update the system
   apt:
     update_cache: yes
+    upgrade: dist
 
 - name: Install required dependencies
   apt:
@@ -8,6 +9,7 @@
       - nodejs
       - npm
       - mysql-server
+      - nginx
     state: present
 
 - name: Install pm2 using npm
@@ -37,31 +39,42 @@
     chdir: /home/ubuntu/final-project-frontend/frontend2
   become: yes
 
+- name: Change ownership of the frontend folder to www-data
+  command: chown -R www-data:www-data /home/ubuntu/final-project-frontend
+  become: yes
+
+- name: Grant read and write permissions to www-data
+  command: chmod -R 775 /home/ubuntu/final-project-frontend
+  become: yes
+
 - name: Add API to config.js in frontend1
   lineinfile:
     path: /home/ubuntu/final-project-frontend/frontend1/src/config.js
-    line: "export const API_URL = 'http://backend-alb-dev-1992743690.us-east-1.elb.amazonaws.com';"
+    line: "export const API_URL = 'http://backend-alb-dev-1804790351.us-east-1.elb.amazonaws.com';"
     create: yes
 
 - name: Add API to config.js in frontend2
   lineinfile:
     path: /home/ubuntu/final-project-frontend/frontend2/src/config.js
-    line: "export const API_URL = 'http://backend-alb-dev-1992743690.us-east-1.elb.amazonaws.com';"
+    line: "export const API_URL = 'http://backend-alb-dev-1804790351.us-east-1.elb.amazonaws.com';"
     create: yes
 
 - name: Delete all existing PM2 processes
   command: pm2 delete all
   ignore_errors: yes
 
-- name: Start frontend1 with pm2
-  command: pm2 start npm --name frontend1 -- run start
+- name: Start frontend1 application with pm2
+  command: pm2 start npm --name frontend1 -- start
   args:
     chdir: /home/ubuntu/final-project-frontend/frontend1
+  become: yes
 
-- name: Start frontend2 with pm2
-  command: pm2 start npm --name frontend2 -- run start
+- name: Start frontend2 application with pm2
+  command: pm2 start npm --name frontend2 -- start
   args:
     chdir: /home/ubuntu/final-project-frontend/frontend2
+  become: yes
+
 
 - name: Deploy Nginx configuration
   template:

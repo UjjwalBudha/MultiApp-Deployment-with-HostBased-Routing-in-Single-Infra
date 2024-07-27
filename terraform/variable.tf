@@ -76,3 +76,9 @@ variable "hosted_zone_id" {
   description = "hosted zone id"
   type        = string
 }
+
+variable "email" {
+  description = "email"
+  type        = string
+  
+}

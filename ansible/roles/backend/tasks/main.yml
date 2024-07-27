@@ -1,4 +1,3 @@
----
 - name: Update the system
   apt:
     update_cache: yes
@@ -16,6 +15,11 @@
   npm:
     name: pm2
     global: yes
+
+- name: Delete the backend repository folder if it exists
+  file:
+    path: /home/ubuntu/final-project-backend
+    state: absent
 
 - name: Clone the backend repository if it does not exist
   git:
@@ -37,28 +41,10 @@
     path: /home/ubuntu/final-project-backend/backend1/.env
     state: absent
 
-- name: Create new .env file in backend1 folder
-  copy:
-    dest: /home/ubuntu/final-project-backend/backend1/.env
-    content: |
-      DB_HOST=database-dev-ujwal-final-project.cmuokqciitb8.us-east-1.rds.amazonaws.com
-      DB_USERNAME=ujwal
-      DB_PASSWORD=ujwal123
-      DB_NAME=products
-
 - name: Delete existing .env file in backend2 folder
   file:
     path: /home/ubuntu/final-project-backend/backend2/.env
     state: absent
-
-- name: Create new .env file in backend2 folder
-  copy:
-    dest: /home/ubuntu/final-project-backend/backend2/.env
-    content: |
-      DB_HOST=database-dev-ujwal-final-project.cmuokqciitb8.us-east-1.rds.amazonaws.com
-      DB_USERNAME=ujwal
-      DB_PASSWORD=ujwal123
-      DB_NAME=products01
 
 - name: Delete all existing pm2 processes
   shell: pm2 delete all
@@ -67,7 +53,7 @@
   ignore_errors: true
 
 - name: Start application with pm2 in backend1 and backend2 folders
-  shell: pm2 start npm --name "{{ item }}" -- start
+  shell: pm2 start node --name "{{ item }}" -- index.js
   args:
     chdir: /home/ubuntu/final-project-backend/{{ item }}
     executable: /bin/bash
