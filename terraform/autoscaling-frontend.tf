@@ -7,8 +7,7 @@ module "frontend-autoscaling_group" {
 
   # Launch template
   image_id             = var.ami
-  instance_type        = "t2.medium"
-  key_name             = "intern-ujwal"
+  instance_type        = var.instance_medium
   iam_instance_profile_arn = aws_iam_instance_profile.ssm_instance_profile.arn
   
   

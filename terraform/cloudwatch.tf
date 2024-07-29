@@ -2,7 +2,7 @@ module "backend-autoscaling_alarm" {
   source  = "terraform-aws-modules/cloudwatch/aws//modules/metric-alarm"
   version = "~> 3.0"
 
-  alarm_name            = "backend-autoscaling-cpu-utilization-alarm"
+  alarm_name            = "backend-alarm-${var.environment}-${var.project_name}"
   comparison_operator   = "GreaterThanOrEqualToThreshold"
   evaluation_periods    = "2"
   threshold             = 70
@@ -25,7 +25,7 @@ module "frontend-autoscaling_alarm" {
   source  = "terraform-aws-modules/cloudwatch/aws//modules/metric-alarm"
   version = "~> 3.0"
 
-  alarm_name            = "frontend-autoscaling-cpu-utilization-alarm"
+  alarm_name            = "frontend-alarm-${var.environment}-${var.project_name}"
   comparison_operator   = "GreaterThanOrEqualToThreshold"
   evaluation_periods    = "2"
   threshold             = 70

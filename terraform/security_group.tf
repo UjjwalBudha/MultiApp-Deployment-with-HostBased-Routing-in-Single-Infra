@@ -1,23 +1,3 @@
-module "jumper_sg" {
-  source = "terraform-aws-modules/security-group/aws"
-
-  name        = "jump_server_ujwal_sg"
-  description = "Security group for web server with SSH port open"
-  vpc_id      = module.vpc.vpc_id
-
-  ingress_with_cidr_blocks = [
-    {
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      description = "Allow SSH"
-      cidr_blocks = "0.0.0.0/0"
-    }
-  ]
-
-  egress_rules = ["all-all"]
-}
-
 module "frontend_sg" {
   source = "terraform-aws-modules/security-group/aws"
 

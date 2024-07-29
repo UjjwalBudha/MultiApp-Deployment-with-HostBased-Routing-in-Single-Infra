@@ -17,9 +17,16 @@
     name: pm2
     global: yes
 
+- name: Check if repository directory exists
+  stat:
+    path: /home/ubuntu/final-project-frontend
+  register: repo_dir
+
 - name: Remove existing repository if it exists
-  shell: rm -rf /home/ubuntu/final-project-frontend
-  ignore_errors: yes
+  file:
+    path: /home/ubuntu/final-project-frontend
+    state: absent
+  when: repo_dir.stat.exists
 
 - name: Clone GitHub repository
   git:
@@ -39,24 +46,16 @@
     chdir: /home/ubuntu/final-project-frontend/frontend2
   become: yes
 
-- name: Change ownership of the frontend folder to www-data
-  command: chown -R www-data:www-data /home/ubuntu/final-project-frontend
-  become: yes
-
-- name: Grant read and write permissions to www-data
-  command: chmod -R 775 /home/ubuntu/final-project-frontend
-  become: yes
-
 - name: Add API to config.js in frontend1
   lineinfile:
     path: /home/ubuntu/final-project-frontend/frontend1/src/config.js
-    line: "export const API_URL = 'http://backend-alb-dev-1804790351.us-east-1.elb.amazonaws.com';"
+    line: "export const API_URL = 'http://backend-alb-dev-779431800.us-east-1.elb.amazonaws.com';"
     create: yes
 
 - name: Add API to config.js in frontend2
   lineinfile:
     path: /home/ubuntu/final-project-frontend/frontend2/src/config.js
-    line: "export const API_URL = 'http://backend-alb-dev-1804790351.us-east-1.elb.amazonaws.com';"
+    line: "export const API_URL = 'http://backend-alb-dev-779431800.us-east-1.elb.amazonaws.com';"
     create: yes
 
 - name: Delete all existing PM2 processes
@@ -74,6 +73,8 @@
   args:
     chdir: /home/ubuntu/final-project-frontend/frontend2
   become: yes
+  environment:
+    PORT: 3001
 
 
 - name: Deploy Nginx configuration

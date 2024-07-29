@@ -82,3 +82,19 @@ variable "email" {
   type        = string
   
 }
+
+variable "zone_name" {
+  description = "defualt zone name"
+  type        = string
+}
+
+variable "instance_small" {
+  description = "value for small instance"
+  type        = string
+}
+
+variable "instance_medium" {
+  description = "value for medium instance"
+  type        = string
+  
+}

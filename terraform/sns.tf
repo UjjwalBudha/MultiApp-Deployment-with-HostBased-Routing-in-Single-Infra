@@ -2,7 +2,7 @@ module "sns_topic" {
   source  = "terraform-aws-modules/sns/aws"
   version = "6.1.0"
 
-  name  = "final-project-topic"
+  name  = "sns-${var.environment}-${var.project_name}"
 
   create_topic_policy = true
   topic_policy_statements = {

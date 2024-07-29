@@ -34,8 +34,7 @@ module "db" {
   # DB option group
   major_engine_version = "8.0"
 
-  # Database Deletion Protection
-  deletion_protection = false // Change to true to enable deletion protection
+  deletion_protection = false
 
   skip_final_snapshot = true
 
