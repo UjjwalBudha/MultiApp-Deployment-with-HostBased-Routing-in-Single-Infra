@@ -3,7 +3,7 @@ name: Deploying an app
 on:
   workflow_dispatch:
   push:
-    branches: ["dev", "main"]
+    branches: ["dev", "updates"]
   pull_request:
     branches: ["main"]
 
