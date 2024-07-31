@@ -37,6 +37,6 @@ module "db" {
 
   deletion_protection = true // true in production
 
-  skip_final_snapshot = true
+  skip_final_snapshot = false
 
 }
