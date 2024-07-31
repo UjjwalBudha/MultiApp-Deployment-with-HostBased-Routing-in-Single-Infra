@@ -85,35 +85,3 @@ resource "aws_lb_listener_rule" "backend_rule2" {
     }
   }
 }
-
-resource "aws_lb_listener_rule" "backend_rule3" {
-  listener_arn = aws_lb_listener.http_backend.arn
-  priority     = 3
-
-  action {
-    type             = "forward"
-    target_group_arn = [ aws_lb_target_group.backend_tg1.arn, aws_lb_target_group.backend_tg2.arn ]
-  }
-
-  condition {
-    path_pattern {
-      values = ["/uploads*"]
-    }
-  }
-}
-
-resource "aws_lb_listener_rule" "backend_rule4" {
-  listener_arn = aws_lb_listener.http_backend.arn
-  priority     = 4
-
-  action {
-    type             = "forward"
-    target_group_arn = [ aws_lb_target_group.backend_tg1.arn, aws_lb_target_group.backend_tg2.arn ]
-  }
-
-  condition {
-    path_pattern {
-      values = ["/thumbnailUpload*"]
-    }
-  }
-}

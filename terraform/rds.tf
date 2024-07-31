@@ -8,6 +8,7 @@ module "db" {
   engine_version    = "8.0.35"
   instance_class    = "db.t3.micro"
   allocated_storage = 5
+  multi_az = true
 
   db_name                     = "products"
   username                    = "admin"
