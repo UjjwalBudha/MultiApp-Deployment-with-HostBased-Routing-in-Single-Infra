@@ -103,3 +103,15 @@ variable "instance_medium" {
   type        = string
 
 }
+
+variable "db_name" {
+  description = "db name"
+  type        = string
+  default = "products"
+}
+
+variable "db_name1" {
+  description = "db name"
+  type        = string
+  default = "products01"
+}

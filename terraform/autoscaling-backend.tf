@@ -9,11 +9,7 @@ module "backend-autoscaling_group" {
   image_id                 = var.ami-backend
   instance_type            = var.instance_small
   iam_instance_profile_arn = aws_iam_instance_profile.ssm_instance_profile.arn
-
-
-
   user_data = base64encode(file("${path.module}/script/backend.sh"))
-
   security_groups = [module.backend_sg.security_group_id]
 
   # Auto Scaling group setting
