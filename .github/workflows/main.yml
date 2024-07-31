@@ -36,16 +36,6 @@ jobs:
           cd terraform
           terraform apply -var-file=dev.tfvars -auto-approve
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-
-      - name: Install Ansible and AWS collections
-        run: |
-          python -m pip install --upgrade pip
-          pip install ansible boto3 botocore
-          ansible-galaxy collection install amazon.aws
 
       - name: Run Ansible Playbook
         run: |
