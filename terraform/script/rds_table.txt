@@ -1,8 +1,6 @@
 CREATE DATABASE products;
 USE products;
 
-
-
 CREATE TABLE product (
     productId INT AUTO_INCREMENT PRIMARY KEY,
     productTitle VARCHAR(255) NOT NULL,
@@ -12,15 +10,12 @@ CREATE TABLE product (
     productThumbnail VARCHAR(255)
 );
 
-
-
 INSERT INTO product (productTitle, productDescription, productPrice, availableQuantity, productThumbnail)
 VALUES
-('car', 'A high precision wireless mouse suitable for gaming and office use.', 25.99, 150, 'image1.jpg'),
-('bike', 'Comfortable and stylish ergonomic keyboard for long typing sessions.', 45.50, 85, 'image2.jpg'),
-('bus', 'Full HD webcam for streaming and video calls with 1080p resolution.', 70.00, 120, 'image3.jpg'),
-('cycle', 'High capacity 10000mAh portable charger for smartphones and tablets.', 34.99, 200, 'image4.jpg'),
-('taxi', 'Noise-cancelling headphones with up to 20 hours of battery life.', 89.99, 90, 'image5.jpg');
+('Lamborghini', 'Lamborghini - a high-end luxury sports car known for its speed and design.', 250000.00, 5, 'image1.jpg'),
+('Bugatti', 'Bugatti - a premium sports car with unparalleled performance and luxury.', 300000.00, 3, 'image2.jpg'),
+('Ferrari', 'Ferrari - an iconic Italian sports car brand known for its racing heritage.', 270000.00, 4, 'image3.jpg'),
+('Rolls Royce', 'Rolls Royce - epitome of luxury and craftsmanship in the automotive world.', 320000.00, 2, 'image4.jpg');
 
 
 
@@ -29,12 +24,10 @@ VALUES
 
 
 
-CREATE DATABASE products01;
+CREATE DATABASE IF NOT EXISTS products01;
 USE products01;
 
-
-
-CREATE TABLE product (
+CREATE TABLE IF NOT EXISTS product (
     productId INT AUTO_INCREMENT PRIMARY KEY,
     productTitle VARCHAR(255) NOT NULL,
     productDescription TEXT,
@@ -43,12 +36,9 @@ CREATE TABLE product (
     productThumbnail VARCHAR(255)
 );
 
-
-
 INSERT INTO product (productTitle, productDescription, productPrice, availableQuantity, productThumbnail)
 VALUES
-('mobile', 'A high precision wireless mouse suitable for gaming and office use.', 25.99, 150, 'pic1.jpg'),
-('laptop', 'Comfortable and stylish ergonomic keyboard for long typing sessions.', 45.50, 85, 'pic2.jpg'),
-('tv', 'Full HD webcam for streaming and video calls with 1080p resolution.', 70.00, 120, 'pic3.jpg'),
-('fridge', 'High capacity 10000mAh portable charger for smartphones and tablets.', 34.99, 200, 'pic4.jpg'),
-('box', 'Noise-cancelling headphones with up to 20 hours of battery life.', 89.99, 90, 'pic4.jpg');
+('Yamaha', 'Yamaha - a reliable and powerful motorcycle known for its performance.', 15000.00, 10, 'image5.jpg'),
+('Honda', 'Honda - a versatile and durable motorcycle perfect for various terrains.', 12000.00, 15, 'image6.jpg'),
+('Ducati', 'Ducati - an Italian motorcycle brand famous for its stylish design and speed.', 18000.00, 8, 'image7.jpg'),
+('Harley Davidson', 'Harley Davidson - a classic American motorcycle brand known for its cruising bikes.', 20000.00, 5, 'image8.jpg');

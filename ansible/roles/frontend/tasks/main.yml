@@ -5,12 +5,9 @@
 
 - name: Install required dependencies
   apt:
-    name:
-      - nodejs
-      - npm
-      - mysql-server
-      - nginx
+    name: "{{ item }}"
     state: present
+  loop: "{{ dependencies }}"
 
 - name: Install pm2 using npm
   npm:
@@ -19,43 +16,43 @@
 
 - name: Check if repository directory exists
   stat:
-    path: /home/ubuntu/final-project-frontend
+    path: "{{ repo_path }}"
   register: repo_dir
 
 - name: Remove existing repository if it exists
   file:
-    path: /home/ubuntu/final-project-frontend
+    path: "{{ repo_path }}"
     state: absent
   when: repo_dir.stat.exists
 
 - name: Clone GitHub repository
   git:
-    repo: https://github.com/UjjwalBudha/final-project-frontend.git
-    dest: /home/ubuntu/final-project-frontend
+    repo: "{{ repo_url }}"
+    dest: "{{ repo_path }}"
     update: yes
 
 - name: Install npm packages for frontend1
   command: npm install
   args:
-    chdir: /home/ubuntu/final-project-frontend/frontend1
+    chdir: "{{ frontend1_path }}"
   become: yes
 
 - name: Install npm packages for frontend2
   command: npm install
   args:
-    chdir: /home/ubuntu/final-project-frontend/frontend2
+    chdir: "{{ frontend2_path }}"
   become: yes
 
 - name: Add API to config.js in frontend1
   lineinfile:
-    path: /home/ubuntu/final-project-frontend/frontend1/src/config.js
-    line: "export const API_URL = 'http://backend-alb-dev-779431800.us-east-1.elb.amazonaws.com';"
+    path: "{{ frontend1_path }}/config.js"
+    line: "export const apiUrl = '{{ api_url_frontend1 }}';"
     create: yes
 
 - name: Add API to config.js in frontend2
   lineinfile:
-    path: /home/ubuntu/final-project-frontend/frontend2/src/config.js
-    line: "export const API_URL = 'http://backend-alb-dev-779431800.us-east-1.elb.amazonaws.com';"
+    path: "{{ frontend2_path }}/config.js"
+    line: "export const apiUrl = '{{ api_url_frontend2 }}';"
     create: yes
 
 - name: Delete all existing PM2 processes
@@ -63,24 +60,23 @@
   ignore_errors: yes
 
 - name: Start frontend1 application with pm2
-  command: pm2 start npm --name frontend1 -- start
+  command: pm2 start http-server --name "{{ pm2_frontend1 }}" -- -p 3000
   args:
-    chdir: /home/ubuntu/final-project-frontend/frontend1
+    chdir: "{{ frontend1_path }}"
   become: yes
 
 - name: Start frontend2 application with pm2
-  command: pm2 start npm --name frontend2 -- start
+  command: pm2 start http-server --name "{{ pm2_frontend2 }}" -- -p 3001
   args:
-    chdir: /home/ubuntu/final-project-frontend/frontend2
+    chdir: "{{ frontend2_path }}"
   become: yes
   environment:
     PORT: 3001
 
-
 - name: Deploy Nginx configuration
   template:
-    src: nginx.conf.j2
-    dest: /etc/nginx/sites-available/default
+    src: "{{ nginx_conf_src }}"
+    dest: "{{ nginx_conf_dest }}"
     owner: root
     group: root
     mode: '0644'

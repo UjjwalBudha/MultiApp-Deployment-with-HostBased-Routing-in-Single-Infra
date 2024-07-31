@@ -2,7 +2,7 @@ resource "aws_lb" "backend_alb" {
   name               = "backend-alb-${var.environment}"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [ module.backend_sg.security_group_id ]
+  security_groups    = [module.backend_sg.security_group_id]
   subnets            = module.vpc.public_subnets
 
   enable_deletion_protection = false
@@ -81,7 +81,39 @@ resource "aws_lb_listener_rule" "backend_rule2" {
 
   condition {
     path_pattern {
-      values = ["/products01"]
+      values = ["/products01*"]
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "backend_rule3" {
+  listener_arn = aws_lb_listener.http_backend.arn
+  priority     = 3
+
+  action {
+    type             = "forward"
+    target_group_arn = [ aws_lb_target_group.backend_tg1.arn, aws_lb_target_group.backend_tg2.arn ]
+  }
+
+  condition {
+    path_pattern {
+      values = ["/uploads*"]
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "backend_rule4" {
+  listener_arn = aws_lb_listener.http_backend.arn
+  priority     = 4
+
+  action {
+    type             = "forward"
+    target_group_arn = [ aws_lb_target_group.backend_tg1.arn, aws_lb_target_group.backend_tg2.arn ]
+  }
+
+  condition {
+    path_pattern {
+      values = ["/thumbnailUpload*"]
     }
   }
 }

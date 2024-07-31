@@ -31,7 +31,7 @@ variable "public_subnets" {
 variable "private_subnets" {
   description = "List of private subnet CIDRs"
   type        = list(string)
-  default     = [ "10.0.3.0/24", "10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24", "10.0.7.0/24", "10.0.8.0/24" ]
+  default     = ["10.0.3.0/24", "10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24", "10.0.7.0/24", "10.0.8.0/24"]
 }
 
 variable "enable_nat_gateway" {
@@ -49,6 +49,11 @@ variable "single_nat_gateway" {
 variable "ami" {
   description = "ubunntu ami"
   default     = "ami-0a0e5d9c7acc336f1"
+}
+
+variable "ami-backend" {
+  description = "ubunntu ami"
+  default     = "ami-04a81a99f5ec58529"
 }
 
 
@@ -80,7 +85,7 @@ variable "hosted_zone_id" {
 variable "email" {
   description = "email"
   type        = string
-  
+
 }
 
 variable "zone_name" {
@@ -96,5 +101,5 @@ variable "instance_small" {
 variable "instance_medium" {
   description = "value for medium instance"
   type        = string
-  
+
 }

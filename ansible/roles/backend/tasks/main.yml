@@ -1,94 +1,85 @@
-# - name: Update the system
-#   apt:
-#     update_cache: yes
-#     upgrade: dist
+- name: Update the system
+  apt:
+    update_cache: yes
+    upgrade: dist
 
-# - name: Install required packages
-#   apt:
-#     name:
-#       - npm
-#       - nginx
-#       - mysql-server
-#     state: present
+- name: Install required packages
+  apt:
+    name:
+      - npm
+      - nginx
+      - mysql-client
+    state: present
 
-# - name: Install pm2 using npm
-#   npm:
-#     name: pm2
-#     global: yes
+- name: Check if repository directory exists
+  stat:
+    path: /home/ubuntu/final-project-backend-01
+  register: repo_dir
 
-# - name: Check if repository directory exists
-#   stat:
-#     path: /home/ubuntu/final-project-backend
-#   register: repo_dir
-
-# - name: Remove existing repository if it exists
-#   file:
-#     path: /home/ubuntu/final-project-backend
-#     state: absent
-#   when: repo_dir.stat.exists
-
-# - name: Clone GitHub repository
-#   git:
-#     repo: https://github.com/UjjwalBudha/final-project-backend.git
-#     dest: /home/ubuntu/final-project-backend
-#     update: yes
-    
-# - name: Install npm packages for backend
-#   command: npm install
-#   args:
-#     chdir: /home/ubuntu/final-project-backend/backend1
-#   become: yes
-
-# - name: Install npm packages for backend2
-#   command: npm install
-#   args:
-#     chdir: /home/ubuntu/final-project-backend/backend2
-#   become: yes
-
-- name: Delete existing .env file in backend1 folder
+- name: Remove existing repository if it exists
   file:
-    path: /home/ubuntu/final-project-backend/backend1/.env
+    path: /home/ubuntu/final-project-backend-01
     state: absent
+  when: repo_dir.stat.exists
 
-- name: Delete existing .env file in backend2 folder
-  file:
-    path: /home/ubuntu/final-project-backend/backend2/.env
-    state: absent
+- name: Clone GitHub repository
+  git:
+    repo: https://github.com/UjjwalBudha/final-project-backend-01.git
+    dest: /home/ubuntu/final-project-backend-01
+    update: yes
 
-# - name: Delete all existing pm2 processes
-#   shell: pm2 delete all
-#   args:
-#     executable: /bin/bash
-#   ignore_errors: true
+- name: Install npm packages for backend1
+  command: npm install
+  args:
+    chdir: /home/ubuntu/final-project-backend-01/backend1
+  become: yes
 
-# - name: Start application with pm2 in backend1 and backend2 folders
-#   shell: pm2 start node --name "{{ item }}" -- index.js
-#   args:
-#     chdir: /home/ubuntu/final-project-backend/{{ item }}
-#     executable: /bin/bash
-#   with_items:
-#     - backend1
-#     - backend2
+- name: Install npm packages for backend2
+  command: npm install
+  args:
+    chdir: /home/ubuntu/final-project-backend-01/backend2
+  become: yes
 
-# - name: Deploy Nginx configuration
-#   template:
-#     src: nginx.conf.j2
-#     dest: /etc/nginx/sites-available/default
-#     owner: root
-#     group: root
-#     mode: '0644'
+- name: Install pm2
+  npm:
+    name: pm2
+    global: yes
 
-# - name: Test Nginx configuration
-#   command: nginx -t
-#   register: nginx_test
-#   ignore_errors: yes
+- name: Delete all existing PM2 processes
+  command: pm2 delete all
+  ignore_errors: yes
 
-# - name: Fail if Nginx configuration test fails
-#   fail:
-#     msg: "Nginx configuration test failed"
-#   when: nginx_test.rc != 0
+- name: Start backend1 application with pm2
+  command: pm2 start index.js --name backend1
+  args:
+    chdir: /home/ubuntu/final-project-backend-01/backend1/src
+  become: yes
 
-# - name: Restart Nginx to apply the changes
-#   service:
-#     name: nginx
-#     state: restarted
+- name: Start backend2 application with pm2
+  command: pm2 start index.js --name backend2
+  args:
+    chdir: /home/ubuntu/final-project-backend-01/backend2/src
+  become: yes
+
+- name: Deploy Nginx configuration
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/default
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Test Nginx configuration
+  command: nginx -t
+  register: nginx_test
+  ignore_errors: yes
+
+- name: Fail if Nginx configuration test fails
+  fail:
+    msg: "Nginx configuration test failed"
+  when: nginx_test.rc != 0
+
+- name: Restart Nginx to apply the changes
+  service:
+    name: nginx
+    state: restarted

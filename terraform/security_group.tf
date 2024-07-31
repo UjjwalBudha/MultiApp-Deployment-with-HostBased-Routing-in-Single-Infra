@@ -69,14 +69,14 @@ module "backend_sg" {
       description = "Allow SSH"
       cidr_blocks = "0.0.0.0/0"
     },
-      {
+    {
       from_port   = 3000
       to_port     = 3000
       protocol    = "tcp"
       description = "Allow SSH"
       cidr_blocks = "0.0.0.0/0"
     },
-      {
+    {
       from_port   = 3001
       to_port     = 3001
       protocol    = "tcp"

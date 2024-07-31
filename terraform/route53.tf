@@ -6,17 +6,17 @@ module "records" {
 
   records = [
     {
-      name    = "ujwal"  
-      type    = "A"
-      alias   = {
+      name = "ujwal"
+      type = "A"
+      alias = {
         name    = aws_lb.frontend_alb.dns_name
         zone_id = aws_lb.frontend_alb.zone_id
       }
     },
     {
-      name    = "budha"  
-      type    = "A"
-      alias   = {
+      name = "budha"
+      type = "A"
+      alias = {
         name    = aws_lb.frontend_alb.dns_name
         zone_id = aws_lb.frontend_alb.zone_id
       }
