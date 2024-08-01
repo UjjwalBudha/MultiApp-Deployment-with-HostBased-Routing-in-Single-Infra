@@ -6,7 +6,7 @@ module "backend-autoscaling_group" {
   launch_template_name = "backend-launch-template-${var.environment}-${var.project_name}"
 
   # Launch template
-  image_id                 = var.ami-backend
+  image_id                 = local.ami-backend
   instance_type            = var.instance_small
   iam_instance_profile_arn = aws_iam_instance_profile.ssm_instance_profile.arn
   user_data                = base64encode(file("${path.module}/script/backend.sh"))

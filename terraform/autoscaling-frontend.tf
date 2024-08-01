@@ -6,7 +6,7 @@ module "frontend-autoscaling_group" {
   launch_template_name = "frontend-launch-template-${var.environment}-${var.project_name}"
 
   # Launch template
-  image_id                 = var.ami
+  image_id                 = local.ami
   instance_type            = var.instance_medium
   iam_instance_profile_arn = aws_iam_instance_profile.ssm_instance_profile.arn
 

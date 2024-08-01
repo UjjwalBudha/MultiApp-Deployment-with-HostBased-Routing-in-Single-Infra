@@ -34,17 +34,6 @@ variable "private_subnets" {
   default     = ["10.0.3.0/24", "10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24", "10.0.7.0/24", "10.0.8.0/24"]
 }
 
-variable "ami" {
-  description = "ubunntu ami"
-  default     = "ami-0a0e5d9c7acc336f1"
-}
-
-variable "ami-backend" {
-  description = "ubunntu ami"
-  default     = "ami-04a81a99f5ec58529"
-}
-
-
 variable "environment" {
   description = "Environment name (e.g., dev, staging, prod)"
   type        = string
@@ -113,12 +102,12 @@ variable "database_name" {
   description = "database name"
   type        = string
   default     = "products"
-  
+
 }
 
 variable "db_instance_class" {
   description = "db instance class"
   type        = string
   default     = "db.t3.micro"
-  
+
 }
