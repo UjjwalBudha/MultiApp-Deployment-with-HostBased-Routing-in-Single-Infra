@@ -30,13 +30,11 @@
   command: npm install
   args:
     chdir: "{{ backend1_dir }}"
-  become: true
 
 - name: Install npm packages for backend2
   command: npm install
   args:
     chdir: "{{ backend2_dir }}"
-  become: true
 
 - name: Install pm2
   npm:
@@ -51,13 +49,11 @@
   command: pm2 start index.js --name backend1
   args:
     chdir: "{{ backend1_dir }}/src"
-  become: true
 
 - name: Start backend2 application with pm2
   command: pm2 start index.js --name backend2
   args:
     chdir: "{{ backend2_dir }}/src"
-  become: true
 
 - name: Deploy Nginx configuration
   template:

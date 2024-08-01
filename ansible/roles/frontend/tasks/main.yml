@@ -35,25 +35,11 @@
   command: npm install
   args:
     chdir: "{{ frontend1_path }}"
-  become: true
 
 - name: Install npm packages for frontend2
   command: npm install
   args:
     chdir: "{{ frontend2_path }}"
-  become: true
-
-- name: Add API to config.js in frontend1
-  lineinfile:
-    path: "{{ frontend1_path }}/config.js"
-    line: "export const apiUrl = '{{ api_url_frontend1 }}';"
-    create: yes
-
-- name: Add API to config.js in frontend2
-  lineinfile:
-    path: "{{ frontend2_path }}/config.js"
-    line: "export const apiUrl = '{{ api_url_frontend2 }}';"
-    create: yes
 
 - name: Delete all existing PM2 processes
   command: pm2 delete all
@@ -63,19 +49,13 @@
   command: pm2 start http-server --name "{{ pm2_frontend1 }}" -- -p 3000
   args:
     chdir: "{{ frontend1_path }}"
-  become: true
 
 - name: Start frontend2 application with pm2
   command: pm2 start http-server --name "{{ pm2_frontend2 }}" -- -p 3001
   args:
     chdir: "{{ frontend2_path }}"
-  become: true
   environment:
     PORT: 3001
-
-- name: Start frontend2 application with pm2
-  command: pm2 restart all
-  become: true
 
 - name: Deploy Nginx configuration
   template:
