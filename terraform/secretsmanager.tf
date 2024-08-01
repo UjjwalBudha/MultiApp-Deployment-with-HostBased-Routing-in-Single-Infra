@@ -5,7 +5,7 @@ module "secrets_manager" {
   version = "1.1.2"
 
   # Secret
-  name_prefix             = "secret-manager-${var.environment}-${var.project_name}"
+  name_prefix             = "secret-manager-${local.environment}-${local.project_name}"
   description             = "secret manager to store rds credentials"
   recovery_window_in_days = 30
 

@@ -2,7 +2,7 @@ module "db" {
   source  = "terraform-aws-modules/rds/aws"
   version = "6.8.0"
 
-  identifier = "database-${var.environment}-${var.project_name}"
+  identifier = "database-${local.environment}-${local.project_name}"
 
   engine            = "mysql"
   engine_version    = "8.0.35"

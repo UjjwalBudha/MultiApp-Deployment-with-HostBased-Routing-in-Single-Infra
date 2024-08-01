@@ -1,5 +1,5 @@
 resource "aws_lb" "frontend_alb" {
-  name               = "frontend-alb-${var.environment}"
+  name               = "frontend-alb-${local.environment}"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [module.frontend_sg.security_group_id]
@@ -9,7 +9,7 @@ resource "aws_lb" "frontend_alb" {
 }
 
 resource "aws_lb_target_group" "frontend_tg" {
-  name     = "frontend-tg-${var.environment}"
+  name     = "frontend-tg-${local.environment}"
   port     = 80
   protocol = "HTTP"
   vpc_id   = module.vpc.vpc_id

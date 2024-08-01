@@ -1,5 +1,5 @@
 resource "aws_iam_role" "ssm_role" {
-  name = "ssm-role-${var.environment}-${var.project_name}"
+  name = "ssm-role-${local.environment}-${local.project_name}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [

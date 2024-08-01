@@ -1,5 +1,5 @@
 resource "aws_lb" "backend_alb" {
-  name               = "backend-alb-${var.environment}"
+  name               = "backend-alb-${local.environment}"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [module.backend_sg.security_group_id]
@@ -9,7 +9,7 @@ resource "aws_lb" "backend_alb" {
 }
 
 resource "aws_lb_target_group" "backend_tg1" {
-  name     = "backend1-tg-${var.environment}"
+  name     = "backend1-tg-${local.environment}"
   port     = 8081
   protocol = "HTTP"
   vpc_id   = module.vpc.vpc_id
@@ -25,7 +25,7 @@ resource "aws_lb_target_group" "backend_tg1" {
 }
 
 resource "aws_lb_target_group" "backend_tg2" {
-  name     = "backend2-tg-${var.environment}"
+  name     = "backend2-tg-${local.environment}"
   port     = 8082
   protocol = "HTTP"
   vpc_id   = module.vpc.vpc_id

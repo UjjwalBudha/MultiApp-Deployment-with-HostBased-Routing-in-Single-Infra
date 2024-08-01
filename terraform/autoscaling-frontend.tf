@@ -2,8 +2,8 @@ module "frontend-autoscaling_group" {
   source  = "terraform-aws-modules/autoscaling/aws"
   version = "6.1.0"
 
-  name                 = "frontend-${var.environment}-${var.project_name}"
-  launch_template_name = "frontend-launch-template-${var.environment}-${var.project_name}"
+  name                 = "frontend-${local.environment}-${local.project_name}"
+  launch_template_name = "frontend-launch-template-${local.environment}-${local.project_name}"
 
   # Launch template
   image_id                 = local.ami
