@@ -19,21 +19,21 @@ module "frontend_sg" {
       from_port   = 80
       to_port     = 80
       protocol    = "tcp"
-      description = "Allow SSH"
+      description = "Allow HTTP"
       cidr_blocks = "0.0.0.0/0"
     },
     {
       from_port   = 3000
       to_port     = 3000
       protocol    = "tcp"
-      description = "Allow SSH"
+      description = "Allow frontend traffic"
       cidr_blocks = "0.0.0.0/0"
     },
     {
       from_port   = 3001
       to_port     = 3001
       protocol    = "tcp"
-      description = "Allow SSH"
+      description = "Allow frontend traffic"
       cidr_blocks = "0.0.0.0/0"
     }
   ]
@@ -62,35 +62,35 @@ module "backend_sg" {
       from_port   = 8081
       to_port     = 8081
       protocol    = "tcp"
-      description = "Allow SSH"
+      description = "Allow backend traffic"
       cidr_blocks = "0.0.0.0/0"
     },
     {
       from_port   = 8082
       to_port     = 8082
       protocol    = "tcp"
-      description = "Allow SSH"
+      description = "Allow backend traffic"
       cidr_blocks = "0.0.0.0/0"
     },
     {
       from_port   = 3000
       to_port     = 3000
       protocol    = "tcp"
-      description = "Allow SSH"
+      description = "Allow frontend traffic"
       cidr_blocks = "0.0.0.0/0"
     },
     {
       from_port   = 3001
       to_port     = 3001
       protocol    = "tcp"
-      description = "Allow SSH"
+      description = "Allow frontend traffic"
       cidr_blocks = "0.0.0.0/0"
     },
     {
       from_port   = 80
       to_port     = 80
       protocol    = "tcp"
-      description = "Allow SSH"
+      description = "Allow HTTP"
       cidr_blocks = "0.0.0.0/0"
     }
   ]
@@ -111,7 +111,7 @@ module "db_sg" {
       from_port   = 3306
       to_port     = 3306
       protocol    = "tcp"
-      description = "Allow SSH"
+      description = "Allow MySQL"
       cidr_blocks = "0.0.0.0/0"
     }
   ]
