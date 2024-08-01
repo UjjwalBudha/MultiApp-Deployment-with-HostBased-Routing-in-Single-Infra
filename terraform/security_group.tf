@@ -1,9 +1,9 @@
 module "frontend_sg" {
-  source = "terraform-aws-modules/security-group/aws"
+  source  = "terraform-aws-modules/security-group/aws"
   version = "5.1.2"
 
 
-  name = "frontend-sg-${var.environment}-${var.project_name}"
+  name        = "frontend-sg-${var.environment}-${var.project_name}"
   description = "Security group for web server with SSH port open"
   vpc_id      = module.vpc.vpc_id
 
@@ -43,10 +43,10 @@ module "frontend_sg" {
 
 
 module "backend_sg" {
-  source = "terraform-aws-modules/security-group/aws"
+  source  = "terraform-aws-modules/security-group/aws"
   version = "5.1.2"
 
-  name = "backend-sg-${var.environment}-${var.project_name}"
+  name        = "backend-sg-${var.environment}-${var.project_name}"
   description = "Security group for backend with SSH port open"
   vpc_id      = module.vpc.vpc_id
 
@@ -99,10 +99,10 @@ module "backend_sg" {
 }
 
 module "db_sg" {
-  source = "terraform-aws-modules/security-group/aws"
+  source  = "terraform-aws-modules/security-group/aws"
   version = "5.1.2"
 
-  name = "database-sg-${var.environment}-${var.project_name}"
+  name        = "database-sg-${var.environment}-${var.project_name}"
   description = "Security group for backend with SSH port open"
   vpc_id      = module.vpc.vpc_id
 

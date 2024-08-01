@@ -107,11 +107,11 @@ variable "instance_medium" {
 variable "db_name" {
   description = "db name"
   type        = string
-  default = "products"
+  default     = "products"
 }
 
 variable "db_name1" {
   description = "db name"
   type        = string
-  default = "products01"
+  default     = "products01"
 }
