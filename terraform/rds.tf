@@ -6,16 +6,15 @@ module "db" {
 
   engine            = "mysql"
   engine_version    = "8.0.35"
-  instance_class    = "db.t3.micro"
+  instance_class    = var.db_instance_class
   allocated_storage = 5
   multi_az          = true
 
-  db_name                     = "products"
-  username                    = "admin"
+  db_name                     = var.database_name
+  username                    = var.username
   manage_master_user_password = true
   port                        = "3306"
 
-  iam_database_authentication_enabled = true
 
   vpc_security_group_ids = [module.db_sg.security_group_id]
 
@@ -29,10 +28,8 @@ module "db" {
     module.vpc.private_subnets[5]
   ]
 
-  # DB parameter group
   family = "mysql8.0"
 
-  # DB option group
   major_engine_version = "8.0"
 
   deletion_protection = true // true in production

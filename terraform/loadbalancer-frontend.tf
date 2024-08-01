@@ -5,7 +5,7 @@ resource "aws_lb" "frontend_alb" {
   security_groups    = [module.frontend_sg.security_group_id]
   subnets            = module.vpc.public_subnets
 
-  enable_deletion_protection = false
+  enable_deletion_protection = true
 }
 
 resource "aws_lb_target_group" "frontend_tg" {

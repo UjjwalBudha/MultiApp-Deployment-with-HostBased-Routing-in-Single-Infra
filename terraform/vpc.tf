@@ -7,6 +7,6 @@ module "vpc" {
   azs                = var.azs
   public_subnets     = var.public_subnets
   private_subnets    = var.private_subnets
-  enable_nat_gateway = var.enable_nat_gateway
-  single_nat_gateway = var.single_nat_gateway
+  enable_nat_gateway = true
+  single_nat_gateway = true
 }
