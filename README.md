@@ -5,13 +5,16 @@ This repository contains the configuration and setup for deploying a three-tier 
 ## Table of Contents
 
 - [Architecture Overview](#architecture-overview)
-- [Architecture Diagram](#architecture-diagram)
 - [Infrastructure Components](#infrastructure-components)
 - [Monitoring & Logging](#monitoring--logging)
 - [SNS Notifications](#sns-notifications)
 - [Cost Calculation](#cost-calculation)
 - [Setup Instructions](#setup-instructions)
-
+- [Architecture Diagram](#architecture-diagram)
+- [Documentation](#documentation)
+- [Presentation](#presentation)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Architecture Overview
 
@@ -21,6 +24,10 @@ The three-tier architecture consists of the following layers:
 3. **Database Tier:** Manages data storage and retrieval.
 
 Host-based routing directs traffic to the appropriate application based on the requested hostname.
+
+## Architecture Diagram
+
+![alt text](https://github.com/UjjwalBudha/MultiApp-Deployment-with-HostBased-Routing-in-Single-Infra/architecture.png)
 
 ## Infrastructure Components
 
@@ -49,3 +56,11 @@ AWS Cost Explorer and Budgets are used to monitor and manage the costs associate
    ```bash
    git clone https://github.com/yourusername/three-tier-architecture.git
    cd three-tier-architecture
+
+## Configure Host-Based Routing
+
+Update the ALB settings to direct traffic based on the hostname.
+
+## Setup Monitoring & Logging
+
+Configure CloudWatch metrics and alarms as per the code in terraform folder
