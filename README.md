@@ -27,7 +27,7 @@ Host-based routing directs traffic to the appropriate application based on the r
 
 ## Architecture Diagram
 
-![alt text](https://github.com/UjjwalBudha/MultiApp-Deployment-with-HostBased-Routing-in-Single-Infra/architecture.png)
+![alt text](architecture.png)
 
 ## Infrastructure Components
 
