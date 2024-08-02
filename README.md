@@ -5,16 +5,13 @@ This repository contains the configuration and setup for deploying a three-tier 
 ## Table of Contents
 
 - [Architecture Overview](#architecture-overview)
+- [Architecture Diagram](#architecture-diagram)
 - [Infrastructure Components](#infrastructure-components)
 - [Monitoring & Logging](#monitoring--logging)
 - [SNS Notifications](#sns-notifications)
 - [Cost Calculation](#cost-calculation)
 - [Setup Instructions](#setup-instructions)
-- [Architecture Diagram](#architecture-diagram)
-- [Documentation](#documentation)
-- [Presentation](#presentation)
-- [Contributing](#contributing)
-- [License](#license)
+
 
 ## Architecture Overview
 
