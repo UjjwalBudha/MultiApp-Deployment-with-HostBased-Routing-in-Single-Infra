@@ -49,6 +49,7 @@ Amazon Simple Notification Service (SNS) is used to send notifications for vario
 ## Cost Calculation
 
 AWS Cost Explorer and Budgets are used to monitor and manage the costs associated with the infrastructure. Tags are implemented to track costs for each application separately.
+![alt text](costcalculate.png)
 
 ## Setup Instructions
 
