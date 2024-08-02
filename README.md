@@ -9,12 +9,6 @@ This repository contains the configuration and setup for deploying a three-tier 
 - [Monitoring & Logging](#monitoring--logging)
 - [SNS Notifications](#sns-notifications)
 - [Cost Calculation](#cost-calculation)
-- [Setup Instructions](#setup-instructions)
-- [Architecture Diagram](#architecture-diagram)
-- [Documentation](#documentation)
-- [Presentation](#presentation)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Architecture Overview
 
@@ -50,18 +44,3 @@ Amazon Simple Notification Service (SNS) is used to send notifications for vario
 
 AWS Cost Explorer and Budgets are used to monitor and manage the costs associated with the infrastructure. Tags are implemented to track costs for each application separately.
 ![alt text](costcalculate.png)
-
-## Setup Instructions
-
-1. **Clone the Repository:**
-   ```bash
-   git clone https://github.com/yourusername/three-tier-architecture.git
-   cd three-tier-architecture
-
-## Configure Host-Based Routing
-
-Update the ALB settings to direct traffic based on the hostname.
-
-## Setup Monitoring & Logging
-
-Configure CloudWatch metrics and alarms as per the code in terraform folder
