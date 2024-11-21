@@ -42,7 +42,7 @@ jobs:
           pip install ansible boto3 botocore
           ansible-galaxy collection install amazon.aws
 
-      - name: Run Ansible Playbook
+      - name: Run Ansible Playbooks
         run: |
           cd ansible
           ansible-inventory -i aws_ec2.yml --graph
