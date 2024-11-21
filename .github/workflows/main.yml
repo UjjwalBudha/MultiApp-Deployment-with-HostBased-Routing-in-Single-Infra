@@ -3,7 +3,7 @@ name: Deploying an app
 on:
   workflow_dispatch:
   push:
-    branches: ["dev", "updates"]
+    branches: ["dev", "updates", "main"]
   pull_request:
     branches: ["main"]
 
@@ -48,7 +48,7 @@ jobs:
       #     ansible-inventory -i aws_ec2.yml --graph
       #     ansible-playbook -i aws_ec2.yml playbook.yml
 
-      - name: Delete adex directory in ec2
+      - name: Delete adex directory in EC2
         uses: adexltd/aws-ssm-send-command@master
         id: deleting_directory
         with:
@@ -57,12 +57,28 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           instance-ids: "i-02292e22dbf2f0f1f"
-
           working-directory: /var/www/
           command: sudo rm -rf adex
 
       - name: Check SSM Command Status
         run: |
-          COMMAND_ID="85aabc6c-4eaa-4597-a0b0-1ff454e90066"
-          STATUS=$(aws ssm describe-command --command-id $COMMAND_ID --region us-east-1 --query 'Command.Status' --output text)
-          echo "Command Status: $STATUS"
+          COMMAND_ID="${{ steps.deleting_directory.outputs.command-id }}"
+          INSTANCE_ID="i-02292e22dbf2f0f1f"
+
+          # Wait for the command to execute
+          sleep 10
+
+          STATUS=$(aws ssm get-command-invocation \
+            --command-id "$COMMAND_ID" \
+            --instance-id "$INSTANCE_ID" \
+            --region us-east-1 \
+            --query 'Status' \
+            --output text)
+
+          if [ "$STATUS" == "Success" ]; then
+            echo "SSM Command executed successfully"
+            exit 0
+          else
+            echo "SSM Command failed with status: $STATUS"
+            exit 1
+          fi
