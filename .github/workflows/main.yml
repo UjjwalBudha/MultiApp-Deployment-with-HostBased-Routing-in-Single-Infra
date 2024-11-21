@@ -3,7 +3,7 @@ name: Deploying an app
 on:
   workflow_dispatch:
   push:
-    branches: ["dev", "updates"]
+    branches: ["dev", "updates", "main"]
   pull_request:
     branches: ["main"]
 
@@ -60,11 +60,30 @@ jobs:
           working-directory: /var/www/
           command: sudo rm -rf adex
 
-      - name: Install jq for JSON parsing
-        run: sudo apt-get install -y jq
+      - name: Install jq and AWS CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq unzip
+          # Install AWS CLI v2
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+
+      - name: Check AWS CLI Installation
+        run: aws --version
 
       - name: Check SSM Command Status
+        shell: bash
         run: |
+          set +e  # Disable exit on error to capture errors
+          set -x  # Enable command echo for debugging
+
+          # Export AWS credentials for AWS CLI
+          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          export AWS_SESSION_TOKEN=${{ secrets.AWS_SESSION_TOKEN }}
+          export AWS_DEFAULT_REGION=us-east-1
+
           COMMAND_ID="${{ steps.deleting_directory.outputs.command-id }}"
           INSTANCE_ID="i-02292e22dbf2f0f1f"
 
@@ -76,7 +95,18 @@ jobs:
             --command-id "$COMMAND_ID" \
             --instance-id "$INSTANCE_ID" \
             --region us-east-1 \
-            --output json)
+            --output json 2>&1)
+
+          AWS_CLI_EXIT_CODE=$?
+
+          echo "AWS CLI Exit Code: $AWS_CLI_EXIT_CODE"
+          echo "Invocation Output:"
+          echo "$INVOCATION"
+
+          if [ $AWS_CLI_EXIT_CODE -ne 0 ]; then
+            echo "aws ssm get-command-invocation failed with exit code $AWS_CLI_EXIT_CODE"
+            exit 1
+          fi
 
           STATUS=$(echo "$INVOCATION" | jq -r '.Status')
           RESPONSE_CODE=$(echo "$INVOCATION" | jq -r '.ResponseCode')
