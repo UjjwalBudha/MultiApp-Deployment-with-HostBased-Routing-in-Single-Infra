@@ -60,3 +60,16 @@ jobs:
 
           working-directory: /var/www/
           command: sudo rm -rf adex
+
+      - name: Check SSM Command Status
+        run: |
+          COMMAND_ID=$(echo '${{ steps.deleting_directory.outputs.command-id }}')
+          STATUS=$(aws ssm describe-command --command-id $COMMAND_ID --region us-east-1 --query 'Command.Status' --output text)
+          
+          if [ "$STATUS" == "Success" ]; then
+            echo "SSM Command executed successfully"
+            exit 0
+          else
+            echo "SSM Command failed with status: $STATUS"
+            exit 1
+          fi
