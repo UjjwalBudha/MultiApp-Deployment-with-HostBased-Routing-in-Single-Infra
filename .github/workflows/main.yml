@@ -42,8 +42,21 @@ jobs:
           pip install ansible boto3 botocore
           ansible-galaxy collection install amazon.aws
 
-      - name: Run Ansible Playbooks
-        run: |
-          cd ansible
-          ansible-inventory -i aws_ec2.yml --graph
-          ansible-playbook -i aws_ec2.yml playbook.yml
+      # - name: Run Ansible Playbooks
+      #   run: |
+      #     cd ansible
+      #     ansible-inventory -i aws_ec2.yml --graph
+      #     ansible-playbook -i aws_ec2.yml playbook.yml
+
+      - name: Delete adex directory in ec2
+        uses: adexltd/aws-ssm-send-command@master
+        id: deleting_directory
+        with:
+          aws-region: "us-east-1"
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          instance-ids: "i-02292e22dbf2f0f1f"
+
+          working-directory: /var/www/
+          command: sudo rm -rf adex
