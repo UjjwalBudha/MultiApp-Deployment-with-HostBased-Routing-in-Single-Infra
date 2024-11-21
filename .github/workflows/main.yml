@@ -61,7 +61,8 @@ jobs:
           working-directory: /var/www/
           command: sudo rm -rf adex
 
-      - name: Extract SSM Command Status
+      - name: Check SSM Command Status
         run: |
-          STATUS=$(echo '${{ toJson(steps.deleting_directory.outputs) }}' | jq -r '.status')
+          COMMAND_ID="85aabc6c-4eaa-4597-a0b0-1ff454e90066"
+          STATUS=$(aws ssm describe-command --command-id $COMMAND_ID --region us-east-1 --query 'Command.Status' --output text)
           echo "Command Status: $STATUS"
